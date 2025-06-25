@@ -1,0 +1,157 @@
+Problem Statement:
+-----------------
+The author table consists of four columns:
+
+id – the ID of a given author,
+name – the name of a given author,
+birth_year – the year in which a given author was born, and
+death_year – the year in which a given author died (the field is empty if they are still alive).
+
+---1.Select all data from the author table.
+--SELECT * FROM author;
+
+The book table consists of six columns:
+
+id – the ID of a given book,
+author_id – the ID of the author who wrote a given book,
+title – the title of a given book,
+publish_year – the year in which a given book was published,
+publishing_house – the name of the publishing house that printed a given book,
+rating – the average rating of a given book.
+
+---2.Select all data from the book table.
+--Select * from book;
+
+The adaptation table consists of five columns:
+
+book_id – the ID of a given book,
+type – the type of adaptation (movie, game, play, musical),
+title – the name of a given adaptation,
+release_year – the year in which a given adaptation was created,
+rating – the average rating of a given adaptation.
+
+---3.Select all data from the adaptation table.
+--Select * From adaptation;
+
+---4.Join the author table with the book table. Select the title of each book and the name of its author.
+--Select title,name From author 
+   Join book 
+   On author.id = book.author_id;
+
+---5.Show the name of each author together with the title of the book they wrote and the year in which that book was published. Show only books published after 2005.
+--SELECT name, title, publish_year 
+  FROM author JOIN book 
+  ON author.id = book.author_id
+  WHERE publish_year > 2005;
+
+---6.For each book, show its title, adaptation title, adaptation year, and publication year. Consider only books with a rating lower than the rating of their corresponding adaptation. Additionally, show only those books for which an adaptation was released at most four years after the book was published. Rename the title column from the book table to book_title, and the title column from the adaptation table to adaptation_title.
+--SELECT book.title AS book_title, adaptation.title AS adaptation_title, book.publish_year, adaptation.release_year
+   FROM book JOIN adaptation 
+     ON book.id = adaptation.book_id
+     WHERE book.rating < adaptation.rating 
+      AND (adaptation.release_year - book.publish_year) <= 4;
+
+---7.Join the author and book tables using an INNER JOIN. Show the title of each book together with its rating. Consider only those books that were published by authors who are still alive.
+--SELECT title, rating FROM author INNER 
+    JOIN book
+    ON author.id = book.author_id
+    WHERE author.death_year IS null;
+
+We've added a new table: book_review. It's simple and contains only three columns:
+
+book_id - the ID of a reviewed book,
+review - the summary of the review.
+author - the name of the review's author.
+Join the book_review and book tables using a RIGHT JOIN. 
+
+---8.Show the title of the book, the corresponding review, and the name of the review's author.  Consider all books, even those that weren't reviewed.
+--SELECT book.title, adaptation.title, adaptation.release_year FROM book 
+    LEFT JOIN adaptation
+    ON book.id = adaptation.book_id;
+
+---9.Display the title of each book along with the name of its author. Show all books, even those without an author. Show all authors, even those who haven't published a book yet. Use a FULL JOIN.
+--SELECT title, name FROM book FULL 
+   JOIN author
+   ON book.author_id = author.id;
+
+---10.Your school is holding a contest in which you're tasked with correctly matching the names of authors to the names of the books they wrote 
+from a list of all book-author pairs. Generate all possible pairs of book titles and author names. Consider only boooks whose author's name is Ray Henry.
+--SELECT title, name FROM book 
+    CROSS JOIN author
+    WHERE author.name = 'Ray Henry';
+
+---11.Show all books with their movie adaptations. Select each book's title, the name of its publishing house, the title of its adaptation, and the type of the adaptation.
+--SELECT book.title, book.publishing_house, adaptation.title, adaptation.type FROM book 
+    RIGHT JOIN adaptation
+    ON book.id = adaptation.book_id
+    WHERE adaptation.type = 'movie';
+
+---12.Show all information about books that do not have any reviews in the book_review table.
+--SELECT * FROM book
+   LEFT JOIN book_review
+   ON book.id = book_review.book_id
+   WHERE book_review.review IS NULL;
+
+---13.Show the title of each book and the name of its author — but only if the author was born in the 20th century. Otherwise, the author's name field should be NULL.
+---SELECT book.title, author.name FROM book 
+    LEFT JOIN author
+    ON book.author_id = author.id
+    AND author.birth_year BETWEEN 1901 AND 2000;
+
+---14.For every auctioned item that was sold for a price greater than its initial price, show the item name together with the name of its buyer and the price they paid.
+--SELECT auction_item.name, bidder.name, bidder.final_price FROM auction_item 
+   LEFT JOIN bidder
+   ON auction_item.id = bidder.bought_item_id
+   WHERE bidder.final_price > auction_item.initial_price;
+
+---15.Show the name, initial price, and final price of every item with initial price greater than $300. If the item wasn't sold (there was no bidding person), show the item's name anyway.
+--SELECT auction_item.name, auction_item.initial_price, bidder.final_price FROM auction_item 
+   LEFT JOIN bidder
+ON auction_item.id = bidder.bought_item_id
+WHERE auction_item.initial_price > 300
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
